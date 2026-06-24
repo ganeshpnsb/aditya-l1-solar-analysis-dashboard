@@ -53,16 +53,6 @@ streamlit run app.py
 
 Then open http://localhost:8501.
 
-> **No FITS files handy?** Click **Load Demo Data** in the sidebar to generate
-> physically-plausible synthetic SoLEXS + HEL1OS light curves so you can explore
-> the entire pipeline immediately. The parser also falls back to synthetic data
-> automatically if an uploaded file cannot be read.
-
 ## Notes on the science
 
-- **GOES class / Energy** in the catalogues is a heuristic proxy derived from net
-  counts; real flux calibration requires the instrument response (ARF/RMF).
-- The **confidence score** rewards dual-instrument coincidence and close temporal
-  agreement.
-- The forecaster falls back gracefully: XGBoost -> scikit-learn GradientBoosting
-  -> a logistic heuristic, so the app runs even on a minimal install.
+

@@ -1,0 +1,18 @@
+# ----------------------------------------------------------------------------
+# Aditya-L1 Solar Flare Analysis Platform - Python dependencies
+# ----------------------------------------------------------------------------
+# Frontend / UI
+streamlit>=1.36.0
+plotly>=5.22.0
+kaleido>=0.2.1            # static image export for Plotly (download as image)
+
+# Scientific / data stack
+numpy>=1.26.0
+pandas>=2.2.0
+scipy>=1.13.0
+astropy>=6.0.0           # FITS file parsing
+
+# Machine learning
+scikit-learn>=1.5.0
+xgboost>=2.0.0
+# tensorflow>=2.16.0     # optional - uncomment to enable the LSTM forecaster

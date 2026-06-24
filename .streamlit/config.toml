@@ -1,0 +1,16 @@
+# ----------------------------------------------------------------------------
+# Streamlit theme - Dark, ISRO / deep-space inspired palette
+# ----------------------------------------------------------------------------
+[theme]
+base = "dark"
+primaryColor = "#ff7a18"          # solar flare orange (ISRO accent)
+backgroundColor = "#070b1a"       # deep space navy
+secondaryBackgroundColor = "#0f1630"  # card surface
+textColor = "#e6ecff"
+font = "sans serif"
+
+[server]
+maxUploadSize = 500               # allow large FITS files (MB)
+
+[browser]
+gatherUsageStats = false

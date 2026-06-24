@@ -21,22 +21,7 @@ catalogue, forecasts flare probability, and reports verification metrics.
 
 - **Frontend:** Streamlit + Plotly
 - **Data / science:** NumPy, Pandas, SciPy, Astropy
-- **Machine learning:** scikit-learn, XGBoost (TensorFlow LSTM optional)
-
-## Project structure
-
-```
-app.py                      # Streamlit UI (9 features, dark space theme)
-utils/
-    fits_parser.py          # FITS reading + synthetic fallback light curves
-    flare_detector.py       # smoothing, baseline, peak detection
-    catalog_generator.py    # SoLEXS/HEL1OS cross-matching -> master catalogue
-    forecasting.py          # feature engineering + flare-probability model
-    evaluation.py           # TPR/FAR/lead-time/F1 + confusion matrix
-data/                       # uploaded FITS + generated catalogues (runtime)
-models/                     # persisted forecasting models (runtime)
-.streamlit/config.toml      # dark theme + upload size config
-```
+- **Machine learning:** scikit-learn, XGBoost 
 
 ## Getting started
 
@@ -53,6 +38,5 @@ streamlit run app.py
 
 Then open http://localhost:8501.
 
-## Notes on the science
 
 

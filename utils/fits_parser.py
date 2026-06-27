@@ -1,21 +1,38 @@
 """
 fits_parser.py
 ==============
-Read Aditya-L1 SoLEXS (soft X-ray) and HEL1OS (hard X-ray) FITS files and
-return clean, analysis-ready pandas time-series.
 
-The parser is intentionally defensive: real mission FITS products vary in their
-HDU layout and column naming, so we search a list of candidate column names for
-the time axis and the count-rate axis. If a file cannot be read (or no file is
-supplied at all) the module can generate a physically-plausible synthetic light
-curve so the rest of the platform remains fully demonstrable.
+ISROGENZ - Aditya-L1 Solar Flare Analysis Platform
 
-Public API
-----------
-parse_fits(file, source)            -> pandas.DataFrame[time, seconds, counts, source]
-load_timeseries(uploaded_file, ...) -> DataFrame (Streamlit UploadedFile aware)
-generate_synthetic_lightcurve(...)  -> DataFrame  (demo / fallback data)
-validate_fits(file)                 -> (is_valid: bool, message: str)
+This module is responsible for reading and processing FITS files obtained from
+the Aditya-L1 mission's SoLEXS (Soft X-ray) and HEL1OS (Hard X-ray) payloads.
+
+The parser extracts the required time-series information from uploaded FITS
+files and converts it into a clean, analysis-ready pandas DataFrame. Since
+different FITS products may contain variations in HDU structures and column
+names, the parser searches through multiple candidate columns to identify the
+time axis and count-rate values.
+
+This implementation is designed exclusively for uploaded FITS files and does
+not use synthetic or demo datasets. All analysis, visualization, flare
+detection, and forecasting operations are performed using user-provided mission
+data.
+
+## Public API
+
+parse_fits(file, source)
+-> Returns a pandas DataFrame containing:
+[time, seconds, counts, source]
+
+load_timeseries(uploaded_file, source)
+-> Loads and preprocesses uploaded FITS files for further analysis.
+
+validate_fits(file)
+-> Validates the uploaded FITS file and returns:
+(is_valid: bool, message: str)
+
+Developed by Team ISROGENZ
+for the Bharatiya Antariksh Hackathon (BAH) 2026.
 """
 
 from __future__ import annotations
@@ -110,9 +127,8 @@ def parse_fits(
     """
     if not _HAS_ASTROPY:
         raise RuntimeError(
-            "astropy is required to parse FITS files. Install it with "
-            "`pip install astropy` or use generate_synthetic_lightcurve()."
-        )
+    "astropy is required to parse FITS files. Install it using `pip install astropy`."
+)
 
     # Read file bytes using robust helper
     file_bytes = _read_all_bytes(file)
@@ -193,76 +209,8 @@ def parse_fits(
 def load_timeseries(
     uploaded_file,
     source: str = SOURCE_SOLEXS,
-    fallback_to_synthetic: bool = True,
 ) -> pd.DataFrame:
-    try:
-        return parse_fits(uploaded_file, source=source)
-    except Exception as exc:
-        if not fallback_to_synthetic:
-            raise
-        df = generate_synthetic_lightcurve(source=source)
-        df.attrs["fallback_reason"] = str(exc)
-        return df
-# ---------------------------------------------------------------------------
-# Synthetic data (demo + graceful fallback)
-# ---------------------------------------------------------------------------
-def generate_synthetic_lightcurve(
-    source: str = SOURCE_SOLEXS,
-    duration_minutes: int = 240,
-    cadence_seconds: int = 10,
-    n_flares: Optional[int] = None,
-    seed: Optional[int] = None,
-) -> pd.DataFrame:
-    """
-    Generate a realistic X-ray light curve with quiescent background, photon
-    noise and a handful of injected flares (fast rise, exponential decay).
-
-    SoLEXS (soft X-ray) flares are broader and brighter; HEL1OS (hard X-ray)
-    flares are sharper and impulsive - we model that difference here.
-    """
-    rng = np.random.default_rng(seed)
-    n = int(duration_minutes * 60 / cadence_seconds)
-    seconds = np.arange(n) * cadence_seconds
-    start = datetime(2024, 1, 1, 0, 0, 0)
-    times = [start + timedelta(seconds=float(s)) for s in seconds]
-
-    is_soft = source == SOURCE_SOLEXS
-    background = (120.0 if is_soft else 60.0) + rng.normal(0, 4, n)
-    counts = np.clip(background, 1, None)
-
-    if n_flares is None:
-        n_flares = int(rng.integers(3, 7))
-
-    flare_times = np.sort(rng.uniform(seconds[0], seconds[-1], n_flares))
-    for ft in flare_times:
-        amplitude = rng.uniform(300, 1500) * (1.4 if is_soft else 1.0)
-        rise = rng.uniform(20, 60) if is_soft else rng.uniform(8, 25)
-        decay = rng.uniform(120, 400) if is_soft else rng.uniform(40, 150)
-        # Clip exponent arguments to avoid overflow far from the peak.
-        rise_arg = np.clip((ft - seconds) / rise, 0, 50)
-        decay_arg = np.clip((seconds - ft) / decay, 0, 50)
-        profile = np.where(
-            seconds < ft,
-            amplitude * np.exp(-rise_arg),
-            amplitude * np.exp(-decay_arg),
-        )
-        counts = counts + profile
-
-    counts = counts + rng.normal(0, 2, n)  # detector noise
-    counts = np.clip(counts, 1, None)
-
-    df = pd.DataFrame(
-        {
-            "time": times,
-            "seconds": seconds.astype(float),
-            "counts": counts,
-            "source": source,
-        }
-    )
-    df.attrs["synthetic"] = True
-    df.attrs["injected_flare_seconds"] = flare_times.tolist()
-    return df
-
+    return parse_fits(uploaded_file, source=source)
 
 # ---------------------------------------------------------------------------
 # Internal helpers

@@ -170,7 +170,17 @@ PAGES = [
 with st.sidebar:
     st.markdown(f"### \u2600\ufe0f Aditya-L1")
     st.caption("Solar Flare Analysis Platform")
-    page = st.radio("Navigate", PAGES, label_visibility="collapsed")
+    if "page" not in st.session_state:
+     st.session_state.page = "Home Dashboard"
+    for p in PAGES:
+     if st.sidebar.button(
+        f"📄 {p}",
+        use_container_width=True,
+        key=p
+    ):
+        st.session_state.page = p
+
+     page = st.session_state.get("page", "Home Dashboard")
     st.markdown("---")
    
 # ===========================================================================

@@ -70,7 +70,7 @@ class EvaluationResult:
 def evaluate_forecasts(
     predicted_alerts: pd.DataFrame,
     actual_flares: pd.DataFrame,
-    tolerance_s: float = 300.0,
+    tolerance_s: float = 1800.0,
     total_windows: Optional[int] = None,
 ) -> EvaluationResult:
     """

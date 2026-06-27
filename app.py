@@ -174,7 +174,7 @@ with st.sidebar:
      st.session_state.page = "Home Dashboard"
     for p in PAGES:
      if st.sidebar.button(
-        f"📄 {p}",
+        f"{p}",
         use_container_width=True,
         key=p
     ):

@@ -55,19 +55,19 @@ CUSTOM_CSS = f"""
 <style>
 .stApp {{
     background:
-        radial-gradient(1200px 600px at 80% -10%, rgba(55,194,255,0.08), transparent),
-        radial-gradient(900px 500px at 10% 10%, rgba(255,122,24,0.07), transparent),
-        {COL_BG};
+        radial-gradient(900px 500px at 15% 10%, rgba(55,194,255,0.16), transparent 68%),
+        radial-gradient(820px 460px at 85% 0%, rgba(255,122,24,0.14), transparent 66%),
+        linear-gradient(135deg, #02050f 0%, {COL_BG} 45%, #111a39 100%);
     color: {COL_TEXT};
 }}
-section[data-testid="stSidebar"] {{ background: {COL_SURFACE}; border-right: 1px solid rgba(255,255,255,0.06); }}
-.hero-title {{ font-size: 2.1rem; font-weight: 800; letter-spacing: .5px; margin-bottom:.2rem; }}
+section[data-testid="stSidebar"] {{ background: rgba(15, 22, 48, 0.92); border-right: 1px solid rgba(255,255,255,0.08); }}
+.hero-title {{ font-size: 2.1rem; font-weight: 800; letter-spacing: .5px; margin-bottom:.2rem; text-shadow: 0 0 20px rgba(55,194,255,0.18); }}
 .hero-sub {{ color: {COL_MUTED}; font-size: 1rem; }}
 .metric-card {{
-    background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.10);
     border-radius: 16px; padding: 1.1rem 1.25rem; height: 100%;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.32);
 }}
 .metric-label {{ color: {COL_MUTED}; font-size: .8rem; text-transform: uppercase; letter-spacing: 1px; }}
 .metric-value {{ font-size: 1.9rem; font-weight: 800; margin-top:.25rem; }}
@@ -76,8 +76,22 @@ section[data-testid="stSidebar"] {{ background: {COL_SURFACE}; border-right: 1px
 .alert-card {{
     background: linear-gradient(160deg, rgba(255,84,112,0.18), rgba(255,122,24,0.10));
     border: 1px solid rgba(255,84,112,0.5); border-radius: 16px; padding: 1.25rem 1.5rem;
+    box-shadow: 0 8px 24px rgba(255,84,112,0.12);
 }}
 .section-note {{ color: {COL_MUTED}; font-size:.9rem; }}
+.team-section {{ margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.08); }}
+.team-title {{ color: rgba(230,236,255,0.82); font-size: .9rem; letter-spacing: .16em; text-transform: uppercase; text-align: center; margin-bottom: .75rem; }}
+.team-strip {{ display: flex; flex-wrap: wrap; justify-content: center; gap: .55rem; }}
+.team-chip {{
+    padding: .35rem .7rem;
+    border-radius: 999px;
+    font-size: .9rem;
+    color: rgba(230,236,255,0.82);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    font-weight: 400;
+}}
 hr {{ border-color: rgba(255,255,255,0.08); }}
 </style>
 """
@@ -187,7 +201,7 @@ with st.sidebar:
 # FEATURE 1 - HOME DASHBOARD
 # ===========================================================================
 def page_home():
-    st.markdown('<div class="hero-title">Aditya-L1 Solar Flare Analysis Platform</div>', unsafe_allow_html=True)
+    st.markdown('<div class="hero-title">ISROGENZ - Aditya-L1 Solar Flare Analysis Platform</div>', unsafe_allow_html=True)
     st.markdown(
         '<div class="hero-sub">Soft X-ray (SoLEXS) and Hard X-ray (HEL1OS) flare detection, '
         "cataloguing, forecasting and verification.</div>",
@@ -254,6 +268,19 @@ def page_home():
                 f'{label}: {mark}</span>',
                 unsafe_allow_html=True,
             )
+
+    st.markdown(
+        '<div class="team-section">'
+        '<div class="team-title">Our Team</div>'
+        '<div class="team-strip">'
+        '<span class="team-chip">Tejas Tattari</span>'
+        '<span class="team-chip">Pragna Sree</span>'
+        '<span class="team-chip">Hasini Gurram</span>'
+        '<span class="team-chip">Putti P Ganesh</span>'
+        '</div>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
 
 
 # ===========================================================================

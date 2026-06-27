@@ -222,7 +222,10 @@ def page_home():
             """
         )
 
-    n_files = len(st.session_state.uploaded_files)
+    n_files = sum([
+    st.session_state.solexs_df is not None,
+    st.session_state.hel1os_df is not None,
+])
     n_detected = _count_detected()
     n_predicted = _count_predicted()
     last = st.session_state.last_analysis

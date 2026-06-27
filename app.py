@@ -274,6 +274,11 @@ def page_upload():
             "Drop SoLEXS .fits file", type=["fits", "fit", "fts", "gz"], key="up_solexs"
         )
         if solexs_file is not None:
+            size_mb = solexs_file.size / (1024 * 1024)
+
+            st.metric("Uploaded File Size", f"{size_mb:.2f} MB")
+            st.progress(min(size_mb / 50, 1.0))
+            st.caption(f"Uploaded: {size_mb:.2f} MB / 50 MB")
             _handle_upload(solexs_file, fits_parser.SOURCE_SOLEXS, "solexs_df")
 
     with col2:
@@ -282,6 +287,11 @@ def page_upload():
             "Drop HEL1OS .fits file", type=["fits", "fit", "fts", "gz"], key="up_hel1os"
         )
         if hel1os_file is not None:
+            size_mb = hel1os_file.size / (1024 * 1024)
+
+            st.metric("Uploaded File Size", f"{size_mb:.2f} MB")
+            st.progress(min(size_mb / 50, 1.0))
+            st.caption(f"Uploaded: {size_mb:.2f} MB / 50 MB")
             _handle_upload(hel1os_file, fits_parser.SOURCE_HEL1OS, "hel1os_df")
 
     st.markdown("---")

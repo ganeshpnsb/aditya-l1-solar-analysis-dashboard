@@ -674,7 +674,11 @@ def page_evaluation():
 
     tol = st.slider("Alert-to-flare tolerance (s)", 60, 900, 300, step=60)
     if st.button("Compute evaluation metrics", type="primary"):
-        alerts = _simulate_alerts(actual)
+        alerts = pd.DataFrame({
+    "Alert Time": pd.to_datetime(
+        actual["Peak Time" if "Peak Time" in actual.columns else "Event Time"]
+    ) - pd.Timedelta(minutes=5)
+})
         st.session_state.eval_result = evaluation.evaluate_forecasts(alerts, actual, tolerance_s=tol)
         touch_analysis()
 

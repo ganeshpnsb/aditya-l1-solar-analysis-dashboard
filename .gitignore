@@ -6,10 +6,11 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 
-# Environment variables
-.env*.local
+__pycache__/
+*.pyc
 
-# Common ignores
+.env
+
 node_modules
 .next/
 .DS_Store

@@ -352,6 +352,11 @@ def _handle_upload(file, source, state_key):
     file,
     source=source
 )
+       import time
+
+       start = time.time()
+       df = fits_parser.load_timeseries(file, source=source)
+       st.write("Load time:", time.time() - start)
        if df is None:
           return
     st.session_state[state_key] = df

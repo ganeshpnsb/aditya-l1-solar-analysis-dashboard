@@ -352,6 +352,7 @@ def _handle_upload(file, source, state_key):
     file,
     source=source
 )
+       st.write(len(df))
        import time
 
        start = time.time()
